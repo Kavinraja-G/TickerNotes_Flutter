@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "351781767708",
+    "firebase_url": "https://ticker-notes.firebaseio.com",
+    "project_id": "ticker-notes",
+    "storage_bucket": "ticker-notes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351781767708:android:e8f3b4247e2fef5c61edd9",
+        "android_client_info": {
+          "package_name": "com.tickernotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351781767708-s1uhh5ahr62hjbii00t328953j37qsks.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tickernotes",
+            "certificate_hash": "69e623b92c8620da45163b37eee0c29d82ee4922"
+          }
+        },
+        {
+          "client_id": "351781767708-spu7jub3h44vsc0j8975s0vq40uur72r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYhj69GQOINU7LF31-2Rdf6zgEoLns5eA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351781767708-spu7jub3h44vsc0j8975s0vq40uur72r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
