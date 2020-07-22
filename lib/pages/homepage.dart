@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tickernotes/cloud/notes_model.dart';
+import 'package:tickernotes/pages/createnotes.dart';
 import 'package:tickernotes/services/auth.dart';
 
 class HomePage extends StatefulWidget {
@@ -65,21 +68,24 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue[900],Colors.white],
+            colors: [Colors.blue[900], Colors.white],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
         ),
+    
       ),
 
-
-
-//Add notes button 
+      //Add notes button
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => CreateNotes(),
+          )
+        ),
         backgroundColor: Colors.blue[900],
         child: Icon(Icons.add),
       ),
     );
   }
 }
+
