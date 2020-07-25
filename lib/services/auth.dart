@@ -9,51 +9,53 @@ class User {
 }
 
 abstract class BaseAuthentication {
-  Stream<User> get onChangedAuthstate;
-  Future<User> currentUser();
+  Stream<User> get onAuthStateChanged;
   Future<User> signInAnonymously();
   Future<User> signInWithGoogle();
   Future<void> signOut();
+  Future<User> currentUser();
+  Stream<FirebaseUser> get currentFirebaseUser;
 }
 
-class Auth implements BaseAuthentication {
-  Auth();  
-  User _UserFromFirebase(FirebaseUser user) {
+class Auth implements BaseAuthentication{
+  User _userFromFirebase(FirebaseUser user) {
     if (user == null) return null;
     return User(uid: user.uid);
   }
 
-  @override
-  Future<User> signInAnonymously() async {
-    final userData = await FirebaseAuth.instance.signInAnonymously();
-    return _UserFromFirebase(userData.user);
+  Stream<User> get onAuthStateChanged {
+    return FirebaseAuth.instance.onAuthStateChanged
+        .map((event) => _userFromFirebase(event));
   }
 
   @override
+  Future<User> signInAnonymously() async {
+    final result = await FirebaseAuth.instance.signInAnonymously();
+    return _userFromFirebase(result.user);
+  }
+
+  //Google SignIn
   Future<User> signInWithGoogle() async {
     final googleSignIn = GoogleSignIn();
     final googleAccount = await googleSignIn.signIn();
     if (googleAccount != null) {
       final googleAuth = await googleAccount.authentication;
       if (googleAuth.idToken != null && googleAuth.accessToken != null) {
-        final authdata = await FirebaseAuth.instance.signInWithCredential(
+        final authResult = await FirebaseAuth.instance.signInWithCredential(
           GoogleAuthProvider.getCredential(
             idToken: googleAuth.idToken,
             accessToken: googleAuth.accessToken,
           ),
         );
-        return _UserFromFirebase(authdata.user);
+        return _userFromFirebase(authResult.user);
       } else {
         throw PlatformException(
-          code: 'ERROR_INVALID_GOOGLE_AUTH_TOKEN',
-          message: 'Google Auth Token is missing',
-        );
+            code: 'ERROR_MISSING_GOOGLE_AUTH_TOKEN',
+            message: 'Missing Google Auth Tokens');
       }
     } else {
       throw PlatformException(
-        code: 'ERROR_ABORTED_BY_USER',
-        message: 'User aborted sigin',
-      );
+          code: 'ERROR_ABORT_BY_USER', message: 'Sign in was Aborted');
     }
   }
 
@@ -67,14 +69,11 @@ class Auth implements BaseAuthentication {
   @override
   Future<User> currentUser() async {
     final user = await FirebaseAuth.instance.currentUser();
-    return _UserFromFirebase(user);
+    return _userFromFirebase(user);
   }
 
-  @override
-  Stream<User> get onChangedAuthstate
-  {
-    return FirebaseAuth.instance.onAuthStateChanged.map(
-      (event) => _UserFromFirebase(event)
-    );
+  Stream<FirebaseUser> get currentFirebaseUser {
+    return FirebaseAuth.instance.onAuthStateChanged
+        .map((event) => (event));
   }
 }
